@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediQ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --text-color: #ffffff; /* Keeping this for popups */
+        }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: transparent; /* Changed to transparent */
+        }
+
+        /* Full-screen popup styles for all error messages */
+        .full-screen-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1b0b54; /* Popups still have a theme color for visibility */
+            color: var(--text-color);
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        .full-screen-popup h1 {
+            font-size: 4rem;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .full-screen-popup p {
+            font-size: 1.5rem;
+            max-width: 80%;
+            margin-top: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Canvas for the particles */
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 1;
+        }
+
+        /* Styles for the iframe */
+        #main-iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div id="webframe-container">
+        <canvas id="particle-canvas"></canvas>
+        <iframe id="main-iframe" src="https://medicalprostuti.github.io/HomepageofMediQ/"></iframe>
+    </div>
+
+    <div id="no-internet-popup" class="full-screen-popup">
+        <h1>দু:খিত!</h1>
+        <p>ইন্টারনেট সংযোগ বিচ্ছিন্ন! আবার চেষ্টা করো।</p>
+    </div>
+
+    <div id="blocked-ip-popup" class="full-screen-popup">
+        <h1>দু:খিত!</h1>
+        <p>তোমার ডিভাইজ সাময়িক সময়ের জন্য সাসপেন্ডেড হয়েছে৷ সমাধান পেতে ফেসবুক পেজে নক করো! </p>
+    </div>
+    <div id="vpn-blocked-popup" class="full-screen-popup">
+        <h1>দু:খিত!</h1>
+        <p>অ্যাপসটি ভিপিএন সংযোগে ব্যবহারযোগ্য নয়!</p>
+    </div>
+    
+    <div id="api-error-popup" class="full-screen-popup">
+        <h1>দু:খিত!</h1>
+        <p>ইন্টারনেট সংযোগ বিচ্ছিন্ন! আবার চেষ্টা করো! </p>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const noInternetPopup = document.getElementById('no-internet-popup');
+            const blockedIpPopup = document.getElementById('blocked-ip-popup');
+            const vpnBlockedPopup = document.getElementById('vpn-blocked-popup');
+            const apiErrorPopup = document.getElementById('api-error-popup');
+            const mainIframe = document.getElementById('main-iframe');
+            
+            function showPopup(popupElement) {
+                mainIframe.style.display = 'none';
+                noInternetPopup.style.display = 'none';
+                blockedIpPopup.style.display = 'none';
+                vpnBlockedPopup.style.display = 'none';
+                apiErrorPopup.style.display = 'none';
+                
+                if (popupElement) {
+                    popupElement.style.display = 'flex';
+                }
+            }
+
+            async function initialChecks() {
+                // Check internet connection first
+                if (!navigator.onLine) {
+                    showPopup(noInternetPopup);
+                    return;
+                }
+                
+                const blockedIPs = [
+                    '103.178.242.14',
+                    '103.178.242.31',
+                    '103.178.242.36',
+                    '202.86.216.19'
+'103.109.96.203'
+        
+                ];
+                
+                try {
+                    const response = await fetch('https://ipinfo.io/json');
+                    const userData = await response.json();
+                    
+                    if (blockedIPs.includes(userData.ip)) {
+                        showPopup(blockedIpPopup);
+                        return;
+                    }
+
+                    if (userData.country !== 'BD') {
+                        showPopup(vpnBlockedPopup);
+                        return;
+                    }
+
+                    // If all checks pass, the iframe remains visible.
+                } catch (error) {
+                    console.error("Error fetching location data:", error);
+                    showPopup(apiErrorPopup);
+                }
+            }
+
+            initialChecks();
+            
+            window.addEventListener('offline', () => {
+                showPopup(noInternetPopup);
+            });
+
+            window.addEventListener('online', () => {
+                window.location.reload(); 
+            });
+            
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        });
+    </script>
+</body>
+</html>
