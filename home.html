@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BRAINIAC ACADEMICS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      font-family: "Hind Siliguri", sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: white;
+      color: #1b0b54;
+      position: relative;
+    }
+
+    /* Splash Screen */
+    #splash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+
+    #splash img {
+      width: 200px;
+      height: auto;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .fade-out {
+      animation: fadeOut 1s forwards;
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+    /* Fixed Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      padding: 10px 20px;
+      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+
+    .menu-bar {
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      z-index: 1100;
+    }
+
+    .menu-bar div {
+      width: 30px;
+      height: 4px;
+      background-color: #1b0b54;
+      transition: 0.3s;
+    }
+
+    /* Notice Image */
+    .notice-img {
+      width: 40px;
+      height: auto;
+      cursor: pointer;
+      z-index: 1100;
+      transition: transform 0.3s;
+    }
+
+    .notice-img:hover {
+      transform: scale(1.1);
+    }
+
+    .site-name {
+      font-size: 30px;
+      font-style: italic;
+      font-weight: bold;
+      text-align: center;
+      line-height: 1.1;
+    }
+
+    .site-name span {
+      display: block;
+    }
+
+    .site-logo {
+      height: 40px;
+      /* Adjust height as needed to fit the header */
+      width: auto;
+      /* Maintain aspect ratio */
+    }
+
+    /* Sidebar Menu */
+    .menu {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      width: 250px;
+      height: 100%;
+      background-color: white;
+      padding-top: 50px;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+      transition: 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1200;
+      overflow-y: auto;
+    }
+
+    /* Notification Panel */
+    .notification-panel {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 300px;
+      height: 100%;
+      background-color: white;
+      padding: 50px 20px 20px;
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+      transition: 0.3s;
+      z-index: 1200;
+      overflow-y: auto;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 35px;
+      color: #1b0b54;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+      user-select: none;
+    }
+
+    .close-btn:hover {
+      transform: scale(1.2);
+    }
+
+    .menu a {
+      display: block;
+      width: 200px;
+      padding: 12px;
+      font-size: 18px;
+      color: #1b0b54;
+      background-color: white;
+      text-align: center;
+      text-decoration: none;
+      border: 1px solid #1b0b54;
+      margin: 8px 0;
+      border-radius: 5px;
+      transition: 0.3s;
+      white-space: nowrap;
+    }
+
+    .menu a:hover {
+      background-color: #1b0b54;
+      color: white;
+    }
+
+    /* Notification Styles */
+    .notification {
+      margin-bottom: 20px;
+      padding: 10px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .notification h3 {
+      font-size: 18px;
+      font-weight: bold;
+      color: #1b0b54;
+      margin-bottom: 5px;
+    }
+
+    .notification .time {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    .notification p {
+      font-size: 16px;
+      color: #333;
+      line-height: 1.4;
+      font-weight: normal;
+    }
+
+    /* Main Content */
+    .main-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding-top: 80px;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .container h2 {
+      font-weight: bold;
+      color: #1b0b54;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .container p {
+      font-weight: normal;
+      font-size: 16px;
+      color: #000000;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #1b0b54;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+      font-size: 16px;
+      text-align: center;
+      transition: background-color 0.3s;
+    }
+
+    .button:hover {
+      background-color: #0d0633;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="splash">
+    <img src='https://ik.imagekit.io/6pursdr1y/Blue%20and%20Orange%20Flat%20Illustrative%20Education%20Logo_20250907_153420_0000.png?updatedAt=1757238438702'
+      alt="Splash Image">
+  </div>
+
+  <div class="menu" id="sideMenu">
+    <span class="close-btn" onclick="toggleMenu()">×</span>
+    <h2>মেনুবার</h2>
+    <a href="https://medicalprostuti.github.io/features/">ফ্রি ডেমো</a>
+    <a href="https://medicalprostuti.github.io/features/">অনুশীলন</a>
+    <a href="https://medicalprostuti.github.io/features/">ডেইলি এক্স্যাম</a>
+    <a href="https://medicalprostuti.github.io/features">মক এক্স্যাম</a>
+    <a href="https://medicalprostuti.github.io/features/">মেগা এক্স্যাম</a>
+    <a href="https://medicalprostuti.github.io/features/">প্রশ্ন ব্যাংক</a>
+    <a href="https://medicalprostuti.github.io/features/">প্রোগ্রেস কার্ড</a>
+    <a href="https://medicalprostuti.github.io/features/">লিডারবোর্ড</a>
+    <a href="https://medicalprostuti.github.io/features/">ম্যাটারিয়ালস</a>
+    <a href="https://medicalprostuti.github.io/features/">ইউজার গাইডলাইন</a>
+    <a href="https://medicalprostuti.github.io/features/">যোগাযোগ করো</a>
+    <a href="https://medicalprostuti.github.io/features/">আমাদের সম্পর্কে</a>
+  </div>
+
+  <div class="notification-panel" id="notificationPanel">
+    <span class="close-btn" onclick="toggleNotifications()">×</span>
+    <h2>নোটিশ সমূহ</h2>
+    <div class="notification">
+      <h3>নতুন ব্যাচের ভর্তি শুরু</h3>
+      <div class="time">১৬ আগস্ট, ২০২৫, সকাল ৯:০০</div>
+      <p>মেডিকেল ভর্তি পরীক্ষার নতুন ব্যাচের জন্য ভর্তি শুরু হয়েছে। বিস্তারিত জানতে যোগাযোগ করুন।</p>
+    </div>
+    <div class="notification">
+      <h3>ডেমো এক্স্যাম ফ্রি</h3>
+      <div class="time">১১ এপ্রিল, ২০২৫, সকাল ৯:০০</div>
+      <p>আগামী সপ্তাহে ডেমো এক্স্যাম ফ্রি। সুযোগ হাতছাড়া করবেন না!</p>
+    </div>
+  </div>
+
+  <div class="header">
+    <div class="menu-bar" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <img class="site-logo" src="https://ik.imagekit.io/6pursdr1y/Blue%20and%20Orange%20Flat%20Illustrative%20Education%20Logo_20250907_153517_0000.png?updatedAt=1757238396737" alt="Site Logo">
+    <img class="notice-img" src="https://i.ibb.co.com/8g4VS95W/Untitled-design-removebg-preview.png"
+      alt="Notice Icon" onclick="toggleNotifications()">
+  </div>
+
+  <div class="main-content">
+    <div class="container">
+      <h2>আসসালামু আলাইকুম!</h2>
+      <p>মেডিকেল স্ট্যান্ডার্ড প্রশ্ন অনুশীলন করে ও স্ট্যান্ডার্ড প্রশ্নে এক্স্যাম দিয়ে নাও মেডিকেল এডমিশনের সর্বোচ্চ প্রস্তুতি। MediQ হোক তোমার স্বপ্ন যাত্রার সারথি!</p>
+      <div class="button-container">
+        <a href="https://medicalprostuti.github.io/features/" class="button">শুরু করো</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('sideMenu');
+      const notificationPanel = document.getElementById('notificationPanel');
+      notificationPanel.style.right = '-300px';
+      menu.style.left = menu.style.left === '0px' ? '-250px' : '0px';
+    }
+
+    function toggleNotifications() {
+      const notificationPanel = document.getElementById('notificationPanel');
+      const menu = document.getElementById('sideMenu');
+      menu.style.left = '-250px';
+      notificationPanel.style.right = notificationPanel.style.right === '0px' ? '-300px' : '0px';
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const splash = document.getElementById('splash');
+        splash.classList.add('fade-out');
+      }, 1500);
+    });
+  </script>
+
+</body>
+
+</html>
