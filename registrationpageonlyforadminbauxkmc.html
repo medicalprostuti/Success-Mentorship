@@ -223,7 +223,7 @@
       .modal-content {
         background-color: #fefefe;
         margin: auto;
-        border-radius: 10px;
+        border-radius: 0px; /* Sharp corners */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         width: 80%;
         max-width: 350px;
@@ -262,7 +262,7 @@
       .modal-content .info-box {
         background-color: #f5f5f5;
         border: 1px solid #ddd;
-        border-radius: 8px;
+        border-radius: 0px; /* Sharp corners */
         padding: 20px;
         margin-bottom: 20px;
         text-align: center;
@@ -273,7 +273,7 @@
         font-weight: 500;
         color: #333;
         display: flex;
-        justify-content: flex-start;
+        justify-content: center; /* Centered alignment for info */
         align-items: center;
         gap: 10px;
       }
@@ -287,27 +287,9 @@
         font-size: 1.2em;
       }
 
+      /* Hiding the copy button and related JS logic */
       .modal-content .info-box .copy-btn {
-        background-color: #1b0b54;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .modal-content .info-box .copy-btn:hover {
-        opacity: 0.8;
-      }
-
-      .modal-content .info-box .copy-btn svg {
-        fill: white;
-        width: 16px;
-        height: 16px;
+        display: none;
       }
 
       .modal-content a {
@@ -370,28 +352,9 @@
         color: #812a81;
       }
 
+      /* Hiding payment modal copy buttons too */
       .payment-info .copy-btn {
-        background-color: #1b0b54;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-
-      .payment-info .copy-btn:hover {
-        opacity: 0.8;
-      }
-
-      .payment-info .copy-btn svg {
-        fill: white;
-        width: 16px;
-        height: 16px;
+        display: none;
       }
 
       .payment-info a {
@@ -526,45 +489,16 @@
           <p class="success-message">তোমার রেজিস্ট্রেশন সফল হয়েছে!</p>
           <p class="student-name" id="popupStudentName"></p>
           <p style="margin-bottom: 20px">
-            Success Mentorship -এর সকল feature access করতে পারবে। <b>রোল-সিরিয়াল</b> কপি
-            করে অ্যাপে ফিরে যাও!
+            নিচে তোমার লগইন ইনফরমেশন দেওয়া হলো।
           </p>
           <div class="info-box" id="infoBoxToDownload">
             <p>
               <b>রোল:</b>
               <span id="popupHscRoll" class="data"></span>
-              <button
-                class="copy-btn"
-                onclick="copyText(document.getElementById('popupHscRoll').textContent)"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M16 1H4C2.9 1 2 1.9 2 3v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
-                  />
-                </svg>
-              </button>
             </p>
             <p>
               <b>সিরিয়াল:</b>
               <span id="popupSerial" class="data"></span>
-              <button
-                class="copy-btn"
-                onclick="copyText(document.getElementById('popupSerial').textContent)"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M16 1H4C2.9 1 2 1.9 2 3v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
-                  />
-                </svg>
-              </button>
             </p>
           </div>
           <div class="button-container">
@@ -594,7 +528,8 @@
         }
       }
 
-      // Function to copy a number to the clipboard and show a custom message
+      // Hiding the copyText function
+      /*
       function copyText(text) {
         const tempInput = document.createElement("input");
         tempInput.value = text;
@@ -616,6 +551,7 @@
           messageBox.style.display = "none";
         }, 2000);
       }
+      */
 
       // Function to close the modal
       function closeModal() {
