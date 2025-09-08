@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BRAINIAC ACADEMICS</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        font-family: "Hind Siliguri", sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: white;
+        color: #1b0b54;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      /* General Container and Form Styling */
+      .container {
+        margin: 20px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+        max-width: 500px;
+        width: 90%;
+        text-align: left;
+      }
+
+      /* Updated h2 styling to match the modal header */
+      h2 {
+        font-weight: bold;
+        color: white;
+        background-color: #1b0b54;
+        text-align: center;
+        padding: 10px 0;
+        margin: -30px -30px 20px -30px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+
+      .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #1b0b54;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        font-size: 16px;
+        text-align: center;
+        cursor: pointer;
+        border: none;
+      }
+
+      .button:hover {
+        background-color: #1b0b54;
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+      }
+
+      /* Registration Form Specific Styling */
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #1b0b54;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #333;
+      }
+
+      .form-group input:focus {
+        outline: none;
+        border-color: #1b0b54;
+        box-shadow: 0 0 5px rgba(27, 11, 84, 0.3);
+      }
+
+      /* Custom Dropdown Styling */
+      .custom-dropdown-container {
+        position: relative;
+        width: 100%;
+      }
+
+      .dropdown-button {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: white;
+        color: #333;
+        font-size: 16px;
+        text-align: left;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .dropdown-button.has-selection {
+        color: #000;
+      }
+
+      .dropdown-button::after {
+        content: "▼";
+        font-size: 12px;
+        color: #1b0b54;
+        transition: transform 0.3s ease;
+      }
+
+      .dropdown-button.active::after {
+        transform: rotate(180deg);
+      }
+
+      .dropdown-options {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-top: none;
+        border-radius: 0 0 5px 5px;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 100;
+        display: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .dropdown-options.show {
+        display: block;
+      }
+
+      .dropdown-option {
+        padding: 10px;
+        cursor: pointer;
+        border-bottom: 1px solid #eee;
+      }
+
+      .dropdown-option:last-child {
+        border-bottom: none;
+      }
+
+      .dropdown-option:hover {
+        background-color: #f5f5f5;
+      }
+
+      .price-text {
+        text-align: center;
+        margin: 15px 0;
+        font-size: 18px;
+        font-weight: bold;
+        color: #1b0b54;
+      }
+
+      .price-text .strikethrough {
+        text-decoration: line-through;
+        color: #888;
+        margin-right: 5px;
+        font-weight: normal;
+      }
+
+      .warning {
+        color: #d9534f;
+        font-size: 14px;
+        text-align: left;
+        margin-top: 15px;
+      }
+
+      .payment-link {
+        text-align: center;
+        margin-top: 10px;
+        display: block;
+      }
+
+      .payment-link a {
+        color: #1b0b54;
+        text-decoration: underline;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      /* Modal Popup Styling */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 80%;
+        max-width: 350px;
+        text-align: center;
+        position: relative;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      .modal-header-stripe {
+        background-color: #1b0b54;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        padding: 10px 0;
+        margin-bottom: 15px;
+      }
+
+      .modal-body {
+        padding: 20px;
+      }
+
+      .modal-content .success-message {
+        font-weight: 700;
+        font-size: 18px;
+        margin-bottom: 15px;
+      }
+      /* Added student name styling */
+      .modal-content .student-name {
+        font-weight: bold;
+        color: #1b0b54;
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+
+      .modal-content .info-box {
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .modal-content .info-box p {
+        margin: 10px 0;
+        font-weight: 500;
+        color: #333;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .modal-content .info-box p b {
+        font-weight: 700;
+        color: #1b0b54;
+      }
+
+      .modal-content .info-box span.data {
+        font-size: 1.2em;
+      }
+
+      .modal-content .info-box .copy-btn {
+        background-color: #1b0b54;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-content .info-box .copy-btn:hover {
+        opacity: 0.8;
+      }
+
+      .modal-content .info-box .copy-btn svg {
+        fill: white;
+        width: 16px;
+        height: 16px;
+      }
+
+      .modal-content a {
+        color: #1b0b54;
+        font-weight: bold;
+        text-decoration: underline;
+      }
+
+      /* New payment info modal styling */
+      .payment-modal-body {
+        padding: 30px;
+      }
+
+      .payment-info h4 {
+        font-weight: bold;
+        color: #1b0b54;
+        margin-bottom: 10px;
+        text-align: center;
+        font-size: 20px;
+      }
+
+      .payment-info > p {
+        margin: 15px 0;
+        text-align: left;
+      }
+
+      .payment-list {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+      }
+
+      .payment-list-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+      }
+
+      .payment-number-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .payment-method-label {
+        font-weight: bold;
+        min-width: 65px;
+      }
+      .payment-method-label.bkash {
+        color: #e43073;
+      }
+      .payment-method-label.nagad {
+        color: #f6802d;
+      }
+      .payment-method-label.rocket {
+        color: #812a81;
+      }
+
+      .payment-info .copy-btn {
+        background-color: #1b0b54;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .payment-info .copy-btn:hover {
+        opacity: 0.8;
+      }
+
+      .payment-info .copy-btn svg {
+        fill: white;
+        width: 16px;
+        height: 16px;
+      }
+
+      .payment-info a {
+        color: #1b0b54;
+        font-weight: bold;
+        text-decoration: underline;
+      }
+
+      /* Message Box for Copy Confirmation */
+      .message-box {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 15px 30px;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        border-radius: 8px;
+        z-index: 3000;
+        font-size: 16px;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+      }
+
+      /* Cross button style */
+      .close-modal {
+        position: absolute;
+        right: 15px;
+        top: 10px;
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none; /* Ensure no underline */
+      }
+
+      .close-modal:hover,
+      .close-modal:focus {
+        color: black;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>শিক্ষার্থী রেজিস্ট্রেশন</h2>
+      <form id="registrationForm">
+        <input type="hidden" id="ipAddress" name="ipAddress" />
+
+        <div class="form-group">
+          <label for="name">নাম</label>
+          <input type="text" id="name" name="name" required />
+        </div>
+        <div class="form-group">
+          <label for="phone">ফোন নম্বর</label>
+          <input type="tel" id="phone" name="phone" required />
+        </div>
+        <div class="form-group">
+          <label for="shikkhaBoard">শিক্ষা বোর্ড</label>
+          <div class="custom-dropdown-container">
+            <button type="button" class="dropdown-button" id="shikkhaBoardBtn">
+              নির্বাচন করুন
+            </button>
+            <div class="dropdown-options" id="shikkhaBoardOptions">
+              <div class="dropdown-option" data-value="Dhaka">ঢাকা</div>
+              <div class="dropdown-option" data-value="Chittagong">
+                চট্টগ্রাম
+              </div>
+              <div class="dropdown-option" data-value="Rajshahi">রাজশাহী</div>
+              <div class="dropdown-option" data-value="Jessore">যশোর</div>
+              <div class="dropdown-option" data-value="Comilla">কুমিল্লা</div>
+              <div class="dropdown-option" data-value="Sylhet">সিলেট</div>
+              <div class="dropdown-option" data-value="Barisal">বরিশাল</div>
+              <div class="dropdown-option" data-value="Dinajpur">দিনাজপুর</div>
+              <div class="dropdown-option" data-value="Mymensingh">
+                ময়মনসিংহ
+              </div>
+              <div class="dropdown-option" data-value="Madrasa">মাদ্রাসা</div>
+            </div>
+            <input
+              type="hidden"
+              name="shikkhaBoard"
+              id="shikkhaBoardInput"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="hscYear">এইচএসসি ব্যাচ</label>
+          <div class="custom-dropdown-container">
+            <button type="button" class="dropdown-button" id="hscYearBtn">
+              নির্বাচন করুন
+            </button>
+            <div class="dropdown-options" id="hscYearOptions">
+              <div class="dropdown-option" data-value="2023">2023</div>
+              <div class="dropdown-option" data-value="2024">2024</div>
+              <div class="dropdown-option" data-value="2025">2025</div>
+              <div class="dropdown-option" data-value="2026">2026</div>
+              <div class="dropdown-option" data-value="2027">2027</div>
+            </div>
+            <input type="hidden" name="hscYear" id="hscYearInput" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="hscRoll">এইচএসসি রোল</label>
+          <input type="number" id="hscRoll" name="hscRoll" required />
+        </div>
+        <div class="form-group">
+          <label for="hscReg">এইচএসসি রেজিস্ট্রেশন</label>
+          <input type="number" id="hscReg" name="hscReg" required />
+        </div>
+        <div class="form-group">
+          <label for="college">কলেজের নাম</label>
+          <input type="text" id="college" name="college" required />
+        </div>
+
+        <div class="button-container">
+          <button type="submit" class="button" id="submitButton">
+            রেজিস্টার
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div id="successModal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div class="modal-header-stripe">অভিনন্দন!</div>
+        <div class="modal-body">
+          <p class="success-message">তোমার রেজিস্ট্রেশন সফল হয়েছে!</p>
+          <p class="student-name" id="popupStudentName"></p>
+          <p style="margin-bottom: 20px">
+            Success Mentorship -এর সকল feature access করতে পারবে। <b>রোল-সিরিয়াল</b> কপি
+            করে অ্যাপে ফিরে যাও!
+          </p>
+          <div class="info-box" id="infoBoxToDownload">
+            <p>
+              <b>রোল:</b>
+              <span id="popupHscRoll" class="data"></span>
+              <button
+                class="copy-btn"
+                onclick="copyText(document.getElementById('popupHscRoll').textContent)"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16 1H4C2.9 1 2 1.9 2 3v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+                  />
+                </svg>
+              </button>
+            </p>
+            <p>
+              <b>সিরিয়াল:</b>
+              <span id="popupSerial" class="data"></span>
+              <button
+                class="copy-btn"
+                onclick="copyText(document.getElementById('popupSerial').textContent)"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16 1H4C2.9 1 2 1.9 2 3v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+                  />
+                </svg>
+              </button>
+            </p>
+          </div>
+          <div class="button-container">
+            <button
+              class="button"
+              onclick="downloadPopupAsImage(document.getElementById('popupHscRoll').textContent)"
+            >
+              ডাউনলোড করুন
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="messageBox" class="message-box">Number Copied!</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+      // Get user's IP address and set it in the hidden input field
+      async function getIpAddress() {
+        try {
+          const response = await fetch("https://api.ipify.org?format=json");
+          const data = await response.json();
+          document.getElementById("ipAddress").value = data.ip;
+        } catch (error) {
+          console.error("Error fetching IP address:", error);
+          document.getElementById("ipAddress").value = "Unknown";
+        }
+      }
+
+      // Function to copy a number to the clipboard and show a custom message
+      function copyText(text) {
+        const tempInput = document.createElement("input");
+        tempInput.value = text;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+
+        const messageBox = document.getElementById("messageBox");
+        messageBox.textContent = "কপি করা হয়েছে!";
+        messageBox.style.display = "block";
+        setTimeout(() => {
+          messageBox.style.opacity = 1;
+        }, 10);
+        setTimeout(() => {
+          messageBox.style.opacity = 0;
+        }, 1500);
+        setTimeout(() => {
+          messageBox.style.display = "none";
+        }, 2000);
+      }
+
+      // Function to close the modal
+      function closeModal() {
+        document.getElementById("successModal").style.display = "none";
+      }
+
+      // Function to toggle custom dropdowns
+      function setupCustomDropdown(
+        buttonId,
+        optionsId,
+        inputId,
+        placeholderText
+      ) {
+        const button = document.getElementById(buttonId);
+        const options = document.getElementById(optionsId);
+        const input = document.getElementById(inputId);
+
+        button.addEventListener("click", () => {
+          const isActive = options.classList.contains("show");
+          closeAllDropdowns();
+          if (!isActive) {
+            options.classList.add("show");
+            button.classList.add("active");
+          }
+        });
+
+        options.querySelectorAll(".dropdown-option").forEach((option) => {
+          option.addEventListener("click", () => {
+            const value = option.getAttribute("data-value");
+            const text = option.textContent;
+            input.value = value;
+            button.textContent = text;
+            button.classList.add("has-selection");
+            options.classList.remove("show");
+            button.classList.remove("active");
+          });
+        });
+
+        document.addEventListener("click", (event) => {
+          if (
+            !button.contains(event.target) &&
+            !options.contains(event.target)
+          ) {
+            options.classList.remove("show");
+            button.classList.remove("active");
+          }
+        });
+
+        document
+          .getElementById("registrationForm")
+          .addEventListener("reset", () => {
+            input.value = "";
+            button.textContent = placeholderText;
+            button.classList.remove("has-selection");
+          });
+      }
+
+      function closeAllDropdowns() {
+        document.querySelectorAll(".dropdown-options").forEach((options) => {
+          options.classList.remove("show");
+        });
+        document.querySelectorAll(".dropdown-button").forEach((button) => {
+          button.classList.remove("active");
+        });
+      }
+
+      // Add event listener to the referral code input and window load
+      window.addEventListener("load", () => {
+        getIpAddress();
+
+        setupCustomDropdown(
+          "shikkhaBoardBtn",
+          "shikkhaBoardOptions",
+          "shikkhaBoardInput",
+          "নির্বাচন করুন"
+        );
+        setupCustomDropdown(
+          "hscYearBtn",
+          "hscYearOptions",
+          "hscYearInput",
+          "নির্বাচন করুন"
+        );
+      });
+
+      // Function to handle form submission
+      document
+        .getElementById("registrationForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const submitButton = document.getElementById("submitButton");
+          submitButton.innerText = "ওয়েট...";
+          submitButton.disabled = true;
+
+          const hscRoll = document.getElementById("hscRoll").value;
+          const hscReg = document.getElementById("hscReg").value;
+          const phone = document.getElementById("phone").value;
+          const name = document.getElementById("name").value;
+          const board = document.getElementById("shikkhaBoardInput").value;
+          const year = document.getElementById("hscYearInput").value;
+
+          // Input validation
+          if (phone.length !== 11) {
+            showCustomMessage("ফোন নম্বর ১১ ডিজিটের হতে হবে।", "error");
+            submitButton.innerText = "রেজিস্টার";
+            submitButton.disabled = false;
+            return;
+          }
+          if (hscRoll.length !== 6 || hscReg.length !== 10) {
+            showCustomMessage(
+              "রোল নম্বর ৬ ডিজিট এবং রেজিস্ট্রেশন নম্বর ১০ ডিজিট হতে হবে।",
+              "error"
+            );
+            submitButton.innerText = "রেজিস্টার";
+            submitButton.disabled = false;
+            return;
+          }
+          if (!board || !year) {
+            showCustomMessage("সকল প্রয়োজনীয় তথ্য পূরণ করুন।", "error");
+            submitButton.innerText = "রেজিস্টার";
+            submitButton.disabled = false;
+            return;
+          }
+
+          const form = event.target;
+          const formData = new FormData(form);
+
+          // Generate a random 5-digit serial number (not starting with 0)
+          const serial = Math.floor(10000 + Math.random() * 90000).toString();
+
+          // Append the generated serial to the form data.
+          formData.append("serial", serial);
+
+          try {
+            const response = await fetch(
+              "https://script.google.com/macros/s/AKfycbwE8rNk8nY7nAAGjRKUYWo1DhKh6jbdLnCVcRrDrpv7ZzCZMJqXTqXghcDjPIngsCFD/exec",
+              {
+                method: "POST",
+                body: formData,
+              }
+            );
+
+            const result = await response.json();
+
+            if (result.result === "success") {
+              // Display the student's name, roll, and the newly created serial in the success modal.
+              document.getElementById("popupStudentName").textContent = name;
+              document.getElementById("popupHscRoll").textContent = hscRoll;
+              document.getElementById("popupSerial").textContent = serial;
+              document.getElementById("successModal").style.display = "flex";
+              form.reset(); // Reset the form fields for the next submission
+            } else {
+              showCustomMessage(
+                "ফর্ম জমা দিতে সমস্যা হয়েছে। আবার চেষ্টা করুন।",
+                "error"
+              );
+              submitButton.innerText = "রেজিস্টার";
+              submitButton.disabled = false;
+            }
+          } catch (e) {
+            console.error("Form submission error:", e);
+            showCustomMessage("একটি ত্রুটি হয়েছে।", "error");
+            submitButton.innerText = "রেজিস্টার";
+            submitButton.disabled = false;
+          }
+        });
+
+      // Function to download the popup content as an image
+      function downloadPopupAsImage(hscRoll) {
+        const modalContent = document.getElementById("successModal");
+        const downloadButton = modalContent.querySelector(
+          ".button-container button"
+        );
+        const closeButton = modalContent.querySelector(".close-modal");
+
+        // Temporarily hide the buttons for the screenshot
+        downloadButton.style.display = "none";
+        closeButton.style.display = "none";
+
+        // Use html2canvas to capture the modal content
+        html2canvas(modalContent.querySelector(".modal-content")).then(
+          (canvas) => {
+            // Restore the buttons
+            downloadButton.style.display = "block";
+            closeButton.style.display = "block";
+
+            const link = document.createElement("a");
+            link.download = `${hscRoll}.jpg`;
+            link.href = canvas.toDataURL("image/jpeg");
+            link.click();
+          }
+        );
+      }
+
+      function showCustomMessage(message, type) {
+        const messageBox = document.getElementById("messageBox");
+        messageBox.textContent = message;
+        if (type === "error") {
+          messageBox.style.backgroundColor = "#d9534f";
+        } else {
+          messageBox.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+        }
+        messageBox.style.display = "block";
+        setTimeout(() => {
+          messageBox.style.opacity = 1;
+        }, 10);
+        setTimeout(() => {
+          messageBox.style.opacity = 0;
+        }, 3000);
+        setTimeout(() => {
+          messageBox.style.display = "none";
+          messageBox.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+        }, 3500);
+      }
+    </script>
+  </body>
+</html>
